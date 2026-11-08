@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090c10" />
+  <title>THE DESCENT — Monster Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="game-canvas" aria-label="3D monster hunting game"></canvas>
+    <div class="vignette"></div>
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✳</span><span>NOCTURNE<span class="brand-sub">FIELD OPERATIONS</span></span></div>
+      <div class="mission"><span class="live-dot"></span><span>CONTAINMENT BREACH</span><i></i><span>ABYSSAL SITE 09</span></div>
+      <div class="comms"><span class="signal">◖◖◖</span> COMMS <b>LIVE</b></div>
+    </header>
+    <section class="hud-left" aria-live="polite">
+      <div class="floor-kicker">DESCENT LEVEL</div>
+      <div class="floor-number" id="floor-number">−01<span>/10</span></div>
+      <div class="floor-name" id="floor-name">THE SERVICE DECK</div>
+      <div class="floor-rule"></div>
+      <div class="objective-label">CURRENT OBJECTIVE</div>
+      <div class="objective" id="objective">ELIMINATE HOSTILES <span id="enemy-count">03</span></div>
+      <div class="level-progress"><div id="level-progress-fill"></div></div>
+      <div class="progress-caption"><span>DESCENT PROGRESS</span><span id="progress-label">01 / 10</span></div>
+    </section>
+    <section class="hud-right">
+      <div class="threat-card"><span class="threat-label">THREAT LEVEL</span><span class="threat-value" id="threat-value">ELEVATED</span><div class="threat-bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="intel-card"><span class="intel-icon">⌁</span><div><span class="intel-label">MOTION TRACKER</span><b id="tracker-count">NO CONTACT</b></div><span class="tracker-dot"></span></div>
+    </section>
+    <div class="crosshair" id="crosshair"><i></i><b></b><i></i><b></b></div>
+    <div class="hit-marker" id="hit-marker">×</div>
+    <div class="toast" id="toast"></div>
+    <footer class="bottom-hud">
+      <div class="health-wrap"><div class="health-icon">✚</div><div class="health-info"><div class="health-top"><span>VITALS</span><b id="health-value">100</b></div><div class="health-track"><div id="health-fill"></div></div></div></div>
+      <div class="center-hint" id="center-hint"><span>W A S D</span> MOVE <i></i><span>MOUSE</span> AIM <i></i><span>LMB</span> FIRE</div>
+      <div class="weapon-wrap"><div class="weapon-label">PRIMARY // 01</div><div class="weapon-name">GRAVES<span>MK. IV</span></div><div class="ammo-row"><div class="ammo-bullet">◆</div><strong>∞</strong><small>CHARGED</small></div></div>
+    </footer>
+    <div class="screen-cover" id="screen-cover">
+      <div class="cover-grid"></div>
+      <div class="cover-content" id="cover-content">
+        <div class="cover-eyebrow"><span></span> A NOCTURNE FIELD REPORT <span></span></div>
+        <h1>THE<br><em>DESCENT</em></h1>
+        <p class="cover-copy">Ten levels below the surface, something is calling.<br>You're here to make sure it stops.</p>
+        <button id="start-button" class="primary-button">BEGIN THE HUNT <span>↗</span></button>
+        <div class="cover-foot">FIELD AGENT 07 <i></i> ABYSSAL SITE 09 <i></i> EST. SURVIVAL: UNKNOWN</div>
+      </div>
+      <div class="cover-stamp">CLASSIFIED<br><b>09 / 10</b></div>
+    </div>
+    <div class="floor-flash" id="floor-flash"><span>DESCENDING</span><b id="flash-floor">−02</b><i></i></div>
+    <div class="modal-layer" id="end-screen">
+      <div class="end-card"><div class="end-kicker" id="end-kicker">MISSION COMPLETE</div><h2 id="end-title">THE ABYSS<br><em>IS SILENT.</em></h2><p id="end-copy">The breach is sealed. For now.</p><div class="end-stats"><span>HOSTILES ELIMINATED <b id="final-kills">00</b></span><span>DEEPEST LEVEL <b>−10</b></span></div><button id="restart-button" class="primary-button">RUN IT AGAIN <span>↻</span></button></div>
+    </div>
+    <div class="sound-control" id="sound-control" title="Toggle sound">♪ <span>SOUND ON</span></div>
+  </main>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
