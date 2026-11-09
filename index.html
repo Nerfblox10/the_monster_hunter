@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#05070a" />
+    <link rel="icon" href="data:," />
+    <title>The Monster Hunter — Descent</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+
+      <div class="vignette"></div>
+      <div id="damage-flash"></div>
+      <div id="low-health"></div>
+      <div id="descent-streaks"></div>
+
+      <div id="hud" aria-hidden="true">
+        <div class="hud-corner hud-left">
+          <div class="hunter-tag"><span class="mini-sigil"></span> HUNTER <span id="stat-damage">0 DMG</span></div>
+          <div class="bar-label"><span>VITALITY</span><span id="hp-text">100</span></div>
+          <div class="health-track">
+            <div id="hp-fill"></div>
+            <div class="bar-ticks"></div>
+          </div>
+          <div class="sub-row">
+            <span id="dash-label">DASH READY</span>
+            <span id="dash-pips"><i></i></span>
+          </div>
+        </div>
+
+        <div class="depth-display">
+          <div id="level-label">LEVEL I · THE RUSTED FOUNDRY</div>
+          <div class="floor-row"><span class="floor-word">FLOOR</span><span id="floor-num">-01</span></div>
+          <div class="floor-pips" id="floor-pips"></div>
+          <div id="objective">PURGE THE FLOOR</div>
+        </div>
+
+        <div class="hud-corner hud-right">
+          <div class="stat"><span class="stat-label">HOSTILES</span><span id="hostile-count">0</span></div>
+          <div class="stat"><span class="stat-label">KILLS</span><span id="kill-count">0</span></div>
+        </div>
+
+        <div id="crosshair" class="crosshair">
+          <span class="ch ch-n"></span><span class="ch ch-e"></span><span class="ch ch-s"></span><span class="ch ch-w"></span>
+          <span class="ch-dot"></span>
+        </div>
+        <div id="hitmarker"><span></span><span></span><span></span><span></span></div>
+
+        <div class="ammo-wrap">
+          <div class="weapon-name">SOUL REVOLVER <span>MK. IV</span></div>
+          <div id="ammo-pips" class="ammo-pips"></div>
+          <div id="reload-label">READY</div>
+        </div>
+
+        <div class="ability-hints">
+          <span><kbd>WASD</kbd> MOVE</span>
+          <span><kbd>LMB</kbd> FIRE</span>
+          <span><kbd>SPACE</kbd> DASH</span>
+          <span><kbd>R</kbd> RELOAD</span>
+        </div>
+
+        <div id="boss-ui">
+          <div class="boss-top"><span id="boss-name">THE GRAVE WARDEN</span><span id="boss-hp-text">1800</span></div>
+          <div class="boss-track"><div id="boss-fill"></div><div class="boss-notches"></div></div>
+          <div id="boss-state">BANISH THE WARDEN</div>
+        </div>
+
+        <div id="interact"><kbd>E</kbd><span>HOLD TO BANISH</span><div class="interact-track"><div id="interact-fill"></div></div></div>
+
+        <div id="toast-layer"></div>
+        <div id="reticle-hint">CLICK TO LOCK AIM</div>
+      </div>
+
+      <div id="start-screen" class="screen">
+        <div class="menu-sigil" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="menu-frame">
+          <div class="eyebrow"><span></span> A DESCENT IN THREE STRATA <span></span></div>
+          <h1><small>THE</small> MONSTER <em>HUNTER</em></h1>
+          <div class="title-rule"><i></i><b></b><i></i></div>
+          <p class="tagline">Ride the cage into the dark. Purge every floor.<br />At floor <strong>-30</strong>, banish what waits below.</p>
+
+          <div class="briefing">
+            <div><b>01</b><span>Purge<br />each floor</span></div>
+            <div><b>02</b><span>Survive<br />the descent</span></div>
+            <div><b>03</b><span>Banish<br />the warden</span></div>
+          </div>
+
+          <button id="start-btn" class="primary">START</button>
+          <div class="controls-line">
+            <span><kbd>WASD</kbd> MOVE</span>
+            <span><kbd>MOUSE</kbd> AIM</span>
+            <span><kbd>LMB</kbd> FIRE</span>
+            <span><kbd>SPACE</kbd> DASH</span>
+            <span><kbd>R</kbd> RELOAD</span>
+          </div>
+        </div>
+        <div class="menu-footer">
+          <span>30 FLOORS · 3 STRATA · ONE WAY DOWN</span>
+          <span id="best-run">NO HUNT RECORDED</span>
+        </div>
+        <div class="menu-credit">A THREE-DIMENSIONAL DESCENT</div>
+      </div>
+
+      <div id="pause-screen" class="screen hidden">
+        <div class="panel">
+          <div class="eyebrow"><span></span> HUNT SUSPENDED <span></span></div>
+          <h2>PAUSED</h2>
+          <p>Click below to re-enter the cage.</p>
+          <button id="resume-btn" class="primary">RESUME</button>
+          <button id="quit-btn" class="ghost">ABANDON HUNT</button>
+        </div>
+      </div>
+
+      <div id="dead-screen" class="screen hidden">
+        <div class="panel">
+          <div class="eyebrow danger"><span></span> THE DARK TAKES YOU <span></span></div>
+          <h2>YOU FELL</h2>
+          <p id="dead-sub">The elevator waits. The monsters do not.</p>
+          <button id="retry-btn" class="primary">RETRY FLOOR</button>
+          <button id="dead-quit-btn" class="ghost">ABANDON HUNT</button>
+        </div>
+      </div>
+
+      <div id="victory-screen" class="screen hidden">
+        <div class="panel victory-panel">
+          <div class="eyebrow"><span></span> THE DESCENT IS COMPLETE <span></span></div>
+          <h2>BANISHED</h2>
+          <p id="victory-sub">The warden is bound. The cage begins its long climb home.</p>
+          <div class="victory-stats">
+            <div><span>TIME</span><b id="stat-time">00:00</b></div>
+            <div><span>KILLS</span><b id="stat-kills">0</b></div>
+            <div><span>HEADSHOTS</span><b id="stat-headshots">0</b></div>
+            <div><span>DAMAGE TAKEN</span><b id="stat-taken">0</b></div>
+          </div>
+          <button id="again-btn" class="primary">DESCEND AGAIN</button>
+          <button id="victory-quit-btn" class="ghost">RETURN TO TITLE</button>
+        </div>
+      </div>
+
+      <div id="level-banner" class="banner hidden">
+        <div class="banner-line"></div>
+        <div class="banner-kicker" id="banner-kicker">NOW ENTERING</div>
+        <div class="banner-title" id="banner-title">STRATUM II</div>
+        <div class="banner-sub" id="banner-sub">THE DROWNED RELIQUARY</div>
+        <div class="banner-line"></div>
+      </div>
+
+      <div id="touch-controls">
+        <div id="touch-stick"><i></i></div>
+        <div class="touch-buttons">
+          <button id="touch-dash">DASH</button>
+          <button id="touch-fire">FIRE</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
